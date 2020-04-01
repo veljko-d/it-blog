@@ -1,0 +1,29 @@
+<div class="col-12" id="pagination">
+    {% if currentPage != 1 %}
+        <a class="pages" href="?page=1">
+            <i class='fas fa-angle-double-left'></i> First Page
+        </a>
+
+        <a class="pages" href="?page={{ currentPage - 1 }}">
+            <i class='fas fa-angle-left'></i>
+        </a>
+    {% endif %}
+
+    {% for page in pagesArray %}
+        {% if currentPage == page %}
+            <a id="pages-active" href="#">{{ page }}</a>
+        {% else %}
+            <a class="pages" href="?page={{ page }}">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if currentPage < lastPage %}
+        <a class="pages" href="?page={{ currentPage + 1 }}">
+            <i class='fas fa-angle-right'></i>
+        </a>
+
+        <a class="pages" href="?page={{ lastPage }}">
+            Last Page <i class='fas fa-angle-double-right'></i>
+        </a>
+    {% endif %}
+</div>

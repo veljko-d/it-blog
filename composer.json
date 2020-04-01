@@ -1,0 +1,41 @@
+{
+  "name": "veljko-d/it-blog",
+  "type": "project",
+  "description": "A simple plain PHP blog",
+  "keywords": [
+    "php",
+    "plain",
+    "blog"
+  ],
+  "authors": [
+    {
+      "name": "Veljko Dimitrijevic",
+      "email": "veljko.d@protonmail.com"
+    }
+  ],
+  "require": {
+    "psr/container": "^1.0",
+    "vlucas/phpdotenv": "^4.1@dev",
+    "monolog/monolog": "^2.0",
+    "twig/twig": "^3.0",
+    "twig/intl-extra": "3.x-dev",
+    "ext-pdo": "*",
+    "ext-iconv": "*",
+    "ext-json": "*",
+    "ext-simplexml": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev"
+}

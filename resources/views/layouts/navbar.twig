@@ -1,0 +1,46 @@
+<nav class="topnav" id="myTopnav">
+    <!-- LEFT -->
+    <a href="/"><i class="fas fa-home"></i></a>
+
+    <!-- RIGHT -->
+    <div class="r-nav">
+        {% if isLogged %}
+        <!-- DROPDOWN: USER -->
+        <div class="dropdown" id="ddn3">
+            <button class="dropbtn">
+                <i class="fas fa-user"></i>
+                <i class="fas fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-content">
+                <a href="#">
+                    <i class="fas fa-id-card"></i> Profile
+                </a>
+
+                <div>
+                    <a onclick="document.getElementById('logout-form').submit()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+
+                    <form id="logout-form" action="/logout" method="POST">
+                        <!-- csrf -->
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <a href="/register">
+            <i class="fas fa-user-plus"></i> Register
+        </a>
+
+        <a href="/login">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- COLLAPSE NAVBAR BUTTON -->
+    <a href="javascript:void(0);" class="trigram"
+       onclick="collapseNav()">&#9776;
+    </a>
+</nav>

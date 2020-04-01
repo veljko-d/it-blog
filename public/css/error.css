@@ -1,0 +1,12 @@
+#not-found {
+    margin-top: 6em;
+    text-align: center
+}
+
+.error {
+    color: #cd0000;
+}
+
+.error ul li {
+    list-style-type: square;
+}

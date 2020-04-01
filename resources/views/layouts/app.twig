@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %} - IT Blog</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+          crossorigin="anonymous">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/layout.css" type="text/css">
+    {% block css %} {% endblock %}
+</head>
+<body>
+    {% include 'layouts/status.twig' %}
+
+    <div id="app">
+        <!-- Header -->
+        {% include 'layouts/header.twig' %}
+
+        <!-- Navigation bar -->
+        {% include 'layouts/navbar.twig' %}
+
+        <!-- Content -->
+        <div id="main" class="row">
+            {% block content %} {% endblock %}
+        </div>
+
+        <!-- Footer -->
+        {% include 'layouts/footer.twig' %}
+
+        <!-- JavaScript -->
+        <script src="/js/layout.js"></script>
+        {% block js %}{% endblock %}
+    </div>
+</body>
+</html>
