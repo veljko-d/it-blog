@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\ServiceProviders\DatabaseServiceProvider;
+use App\Core\ServiceProviders\PostServiceProvider;
 use App\Core\ServiceProviders\TemplateEngineServiceProvider;
 use App\Core\ServiceProviders\LoggerServiceProvider;
 use App\Core\ServiceProviders\UserServiceProvider;
@@ -22,5 +23,6 @@ return [
         TemplateEngineServiceProvider::class,
         LoggerServiceProvider::class,
         UserServiceProvider::class,
+        PostServiceProvider::class,
     ],
 ];
