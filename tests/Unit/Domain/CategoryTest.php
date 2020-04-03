@@ -23,7 +23,7 @@ class CategoryTest extends AbstractTestCase
         $this->assertInstanceOf(
             Category::class,
             $category,
-            'Created object is not the instance of the User class.'
+            'Created object is not the instance of the Category class.'
         );
     }
 
