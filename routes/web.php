@@ -3,6 +3,7 @@
 use App\Controllers\Auth\LoginController;
 use App\Controllers\Auth\RegisterController;
 use App\Controllers\HomeController;
+use App\Controllers\PostController;
 
 return [
     'get::' => [
@@ -28,5 +29,9 @@ return [
     'post::register' => [
         'controller' => RegisterController::class,
         'method'     => 'register',
+    ],
+    'get::posts' => [
+        'controller' => PostController::class,
+        'method'     => 'index',
     ],
 ];
