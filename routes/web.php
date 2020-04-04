@@ -34,4 +34,12 @@ return [
         'controller' => PostController::class,
         'method'     => 'index',
     ],
+    'post::posts/:slug/delete' => [
+        'controller' => PostController::class,
+        'method'     => 'destroy',
+        'login'      => true,
+        'params'     => [
+            'slug' => 'string',
+        ],
+    ],
 ];
