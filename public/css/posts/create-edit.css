@@ -1,0 +1,131 @@
+/* ---------------- NEW POST FORM --------------- */
+@media only screen and (max-width: 768px) {
+    #main #container input[type=submit] {
+        width: 100%;
+    }
+}
+
+#container {
+    border-radius: 0.4em;
+    background: #1111;
+    padding: 3%;
+    margin: 7% auto;
+    min-width: 36em;
+}
+
+#container #form-head {
+    padding: 0 1.7em;
+    text-align: center;
+}
+
+#container #form-head #err ul li {
+    color: red;
+}
+
+#container h1 {
+    padding: 1% 0;
+}
+
+#container hr {
+    border: 1px solid rgba(54, 69, 79, 0.1);
+    margin: 1.5em 0;
+}
+
+#container #val-info {
+    color: #e0301e;
+    font-weight: bold;
+}
+
+#container form {
+    padding: 0 1.7em;
+}
+
+#container form label span {
+    font-size: 0.7em;
+}
+
+#container input[type=text], #main #container textarea {
+    width: 100%;
+    padding: 0.7em;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #333333;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0.4em;
+    box-sizing: border-box;
+    margin: 1em 0;
+    resize: vertical;
+    transition: 0.5s;
+}
+
+#container input[type=text]:focus, #main #container textarea:focus {
+    border: 1px solid #5bc0de;
+}
+
+#container #select {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#container #select * {
+    display: inline;
+}
+
+#container #select select {
+    color: #111;
+    background: inherit;
+    border: 2px solid rgba(54, 69, 79, 0.3);
+    width: 8em;
+}
+
+#container input[type=submit] {
+    background-color: inherit;
+    color: #45a049;
+    padding: 0.5em 1.6em;
+    border: 1px solid #ccc;
+    border-radius: 0.4em;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#container input[type=submit]:hover {
+    background-color: #45a049;
+    color: white;
+    border: 1px solid #45a049;
+}
+
+#cancel-button {
+    background-color: inherit;
+    color: #f44336;
+    padding: 0.5em 1.4em;
+    border: 1px solid #ccc;
+    border-radius: 0.4em;
+    transition: 0.5s;
+    text-decoration: none;
+    font-size: 0.83em;
+    margin-left: 1em;
+}
+
+#cancel-button:hover {
+    background-color: #f44336;
+    color: white;
+    border: 1px solid #f44336;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 0.5em;
+    margin: 1em 0;
+    cursor: pointer;
+    font-size: 0.7em;
+    transition: 0.5s;
+}
+
+.custom-file-upload:hover {
+    background: #333;
+    color: white;
+}

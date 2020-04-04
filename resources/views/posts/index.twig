@@ -1,0 +1,39 @@
+{% extends 'layouts/app.twig' %}
+
+{% block title %}
+    Posts
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/css/posts/index.css" type="text/css">
+    <link rel="stylesheet" href="/css/pagination.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="col-3"></div>
+
+    <div class="col-6">
+        <!-- FILTERING -->
+        <!-- % include 'posts/parts/filtering.twig' % -->
+
+        <!-- LIST POSTS -->
+        {% for post in posts %}
+            {% include 'posts/parts/post.twig' %}
+        {% endfor %}
+
+        <!-- PAGINATION -->
+        {% if posts %}
+            <div id="pagination">
+                {% include 'layouts/pagination.twig' %}
+            </div>
+        {% else %}
+            {% include 'layouts/no-results.twig' %}
+        {% endif %}
+    </div>
+
+    <div class="col-3"></div>
+{% endblock %}
+
+{% block js %}
+    <script src="/js/posts/index.js"></script>
+{% endblock %}

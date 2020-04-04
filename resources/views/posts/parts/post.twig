@@ -1,0 +1,26 @@
+<div class="post-content">
+    <h2><a href="/posts/{{ post.slug }}">{{ post.title }}</a></h2>
+
+    <hr>
+
+    <div class="post-info">
+        <i class="fas fa-clock"></i>
+        <p>{{ post.createdAt|format_datetime() }}</p>
+        <p>|</p>
+
+        {% if post.updatedAt %}
+            <i class="fas fa-clock"></i>
+            <p>Updated: {{ post.updatedAt|format_datetime() }}</p>
+            <p>|</p>
+        {% endif %}
+
+        <i class="fas fa-user"></i>
+        <p><a href="#">{{ post.user_name }}</a></p>
+        <p>|</p>
+
+        <i class="fas fa-comment"></i>
+        <p>0</p>
+    </div>
+
+    <div class="pst-cnt">{{ post.content }}</div>
+</div>

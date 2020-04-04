@@ -1,0 +1,17 @@
+<div id="sec2">
+    <p id="comm">Show comment section ▾</p>
+
+    {% if isLogged and post.userId == loggedUserId %}
+        <form method="POST" action="/posts/{{ post.slug }}/delete">
+            <button type="submit" id="p-del" title="Delete post">
+                <i class="far fa-trash-alt"></i>
+            </button>
+        </form>
+
+        <button title="Edit post">
+            <a id="p-edit" href="/posts/{{ post.slug }}/edit">
+                <i class="far fa-edit"></i>
+            </a>
+        </button>
+    {% endif %}
+</div>

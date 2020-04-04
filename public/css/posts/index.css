@@ -1,0 +1,100 @@
+/* ---------------- CATEGORY LIST --------------- */
+#main div:first-child #categories {
+    margin: 6em auto;
+}
+
+#main div:first-child #categories a {
+    text-decoration: none;
+    color: white;
+    background-color: #398564;
+    padding: 0.8em 0;
+    margin: 0.5em 2em;
+    width: 7em;
+    text-align: center;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.4s;
+    box-shadow: 3px 2px 7px #252e42;
+    display: block;
+}
+
+@media only screen and (max-width: 1080px) {
+    #main div:first-child #categories {
+        margin: 5% auto;
+    }
+
+    #main div:first-child #categories a {
+        display: inline;
+        margin: 1% 2%;
+        padding: 1.5% 2%;
+    }
+}
+
+/* ----------------- POST CONTENT --------------- */
+#main .post-content {
+	margin: 3% auto;
+	min-width: 40em;
+}
+
+#main h1 {
+	text-align: center;
+	margin-top: 6em;
+}
+
+#main .post-content h2 {
+    padding: 5% 5% 0 5%;
+}
+
+#main .post-content h2 a {
+	text-decoration: none;
+	color: #111;
+}
+
+#main .post-content h2 a:hover {
+	text-decoration: underline;
+}
+
+#main .post-content hr {
+    border: 1px solid rgba(54, 69, 79, 0.1);
+    margin: 0 5% 1% 5%;
+}
+
+#main .post-content .post-info {
+	margin-left: 5%;
+}
+
+#main .post-content .post-info * {
+	display: inline;
+	font-size: 0.7em;
+	position: relative;
+}
+
+#main .post-content .post-info p {
+	font-style: italic;
+}
+
+#main .post-content .post-info p a {
+    font-size: 1em;
+    text-decoration: none;
+    color: #111;
+}
+
+#main .post-content .post-info p a:hover {
+    text-decoration: underline;
+}
+
+/* -------- POST CONTENT: ACTUAL CONTENT -------- */
+.pst-cnt {
+	padding: 4.9% 5% 5% 5%;
+	white-space: pre-line; /* show line breaks in browser */
+}
+
+/* --- For more/less text JS function --- */
+.hidden {
+    display: none;
+}
+
+.mr-ls {
+	color: #d9534f;
+	cursor: pointer;
+}

@@ -1,0 +1,20 @@
+<div id="select">
+    <p>Select Category:</p>
+
+    <select name="category_id">
+        {% for category in categories %}
+            <optgroup label="{{ category.name }}">
+                @foreach ($category->categories as $subcategory)
+                {% for subcategory in category.categories %}
+                    {% if post %}
+                        <option value="{{ subcategory.id }}" {% if subcategory.id == post.categoryId %} selected {% endif %}>
+                            {{ subcategory.name }}
+                        </option>
+                    {% else %}
+                        <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+</div>

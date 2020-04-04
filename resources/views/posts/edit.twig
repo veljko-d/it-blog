@@ -1,0 +1,55 @@
+{% extends 'layouts/app.twig' %}
+
+{% block title %}
+    Edit Post
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/css/posts/create-edit.css" type="text/css">
+    <link rel="stylesheet" href="/css/error.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="col-3"></div>
+
+    <div class="col-6">
+        <!-- EDIT POST FORM -->
+        <div id="container">
+            <div id="form-head">
+                <h1><i class="far fa-edit"></i> Edit post</h1>
+
+                <hr>
+
+                <p id="val-info"></p>
+
+                {% include 'layouts/errors.twig' %}
+            </div>
+
+            <form name="edit" action="/posts/{{ post.slug }}/update" method="POST" enctype="multipart/form-data">
+                <label for="title"><i class="fas fa-pen"></i> Title</label>
+                <input type="text" name="title" value="{{ post.title }}">
+
+                <label for="source"><i class="fas fa-link"></i> Source</label>
+                <input type="text" name="source" value="{{ post.source }}">
+
+                <label for="title"><i class="fas fa-tags"></i> Tags <span>(use vertical line | to separate tags)</span></label>
+                <input type="text" name="tags" value="{% for tag in post.tags %}{{ tag.name}}|{% endfor %}">
+
+                <label for="content"><i class="fas fa-align-justify"></i> Content</label>
+                <textarea name="content" rows="12">{{ post.content }}</textarea>
+
+                {% include 'posts/parts/categories.twig' %}
+
+                <hr>
+
+                <input type="submit" value="Save">
+            </form>
+        </div>
+    </div>
+
+    <div class="col-3"></div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

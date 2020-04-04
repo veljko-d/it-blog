@@ -1,0 +1,58 @@
+{% extends 'layouts/app.twig' %}
+
+{% block title %}
+    Create Post
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/css/posts/create-edit.css" type="text/css">
+    <link rel="stylesheet" href="/css/error.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="col-3"></div>
+
+    <div class="col-6">
+        <!-- CREATE POST FORM -->
+        <div id="container">
+            <div id="form-head">
+                <h1><i class="far fa-sticky-note"></i> Create post</h1>
+
+                <hr>
+
+                <p id="val-info"></p>
+
+                {% include 'layouts/errors.twig' %}
+            </div>
+
+            <form name="create" action="/posts" method="POST" enctype="multipart/form-data">
+                <label for="title"><i class="fas fa-heading"></i> Title</label>
+                <input type="text" name="title">
+
+                <label for="source"><i class="fas fa-link"></i> Source</label>
+                <input type="text" name="source">
+
+                <label for="title"><i class="fas fa-tags"></i> Tags <span>(use vertical line | to separate tags)</span></label>
+                <input type="text" name="tags">
+
+                <label for="content"><i class="fas fa-align-justify"></i> Content</label>
+                <textarea name="content" rows="12"></textarea>
+
+                {% include 'posts/parts/categories.twig' %}
+
+                <label for="file-upload" class="custom-file-upload"><i class="fas fa-images"></i> Add Image(s)</label>
+                <input type="file" id="file-upload" name="images[]" multiple>
+
+                <hr>
+
+                <input type="submit" value="Save">
+            </form>
+        </div>
+    </div>
+
+    <div class="col-3"></div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
