@@ -82,4 +82,21 @@ class PostModel extends AbstractModel implements PostModelInterface
 
         return $numberOfPosts[0];
     }
+
+    /**
+     * @param string $slug
+     *
+     * @return mixed|void
+     * @throws DbException
+     */
+    public function delete(string $slug)
+    {
+        $query = 'DELETE FROM posts WHERE slug = :slug';
+
+        try {
+            $this->db->execute($query, [':slug' => $slug]);
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+    }
 }

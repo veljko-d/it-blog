@@ -17,4 +17,11 @@ interface PostModelInterface extends ModelInterface
      * @return array
      */
     public function getAll(array $params): array;
+
+    /**
+     * @param string $slug
+     *
+     * @return mixed
+     */
+    public function delete(string $slug);
 }
