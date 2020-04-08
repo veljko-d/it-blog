@@ -2,40 +2,79 @@
     <!-- LEFT -->
     <a href="/"><i class="fas fa-home"></i></a>
 
-    <!-- RIGHT -->
-    <div class="r-nav">
-        {% if isLogged %}
-        <!-- DROPDOWN: USER -->
-        <div class="dropdown" id="ddn3">
+    <a href="/posts">Posts</a>
+
+    {% if isLogged %}
+        <!-- DROPDOWN: MY -->
+        <div class="l-nav dropdown" id="ddn1">
             <button class="dropbtn">
-                <i class="fas fa-user"></i>
-                <i class="fas fa-caret-down"></i>
+                My <i class="fa fa-caret-down"></i>
             </button>
 
             <div class="dropdown-content">
                 <a href="#">
-                    <i class="fas fa-id-card"></i> Profile
+                    <i class="fas fa-newspaper"></i> Posts
                 </a>
-
-                <div>
-                    <a onclick="document.getElementById('logout-form').submit()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-
-                    <form id="logout-form" action="/logout" method="POST">
-                        <!-- csrf -->
-                    </form>
-                </div>
             </div>
         </div>
-        {% else %}
-        <a href="/register">
-            <i class="fas fa-user-plus"></i> Register
-        </a>
 
-        <a href="/login">
-            <i class="fas fa-sign-in-alt"></i> Login
-        </a>
+        <!-- DROPDOWN: NEW -->
+        <div class="l-nav dropdown" id="ddn2">
+            <button class="dropbtn">
+                New <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-content">
+                <a href="/posts/create" >
+                    <i class="fas fa-sticky-note"></i> Post
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- SEARCH -->
+    <div class="l-nav search-container">
+        <form action="/posts?search=" method="get">
+            <input type="search" placeholder="Search" name="search">
+
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="r-nav">
+        {% if isLogged %}
+            <!-- DROPDOWN: USER -->
+            <div class="dropdown" id="ddn3">
+                <button class="dropbtn">
+                    <i class="fas fa-user"></i>
+                    <i class="fas fa-caret-down"></i>
+                </button>
+
+                <div class="dropdown-content">
+                    <a href="#">
+                        <i class="fas fa-id-card"></i> Profile
+                    </a>
+
+                    <div>
+                        <a onclick="document.getElementById('logout-form').submit()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+
+                        <form id="logout-form" action="/logout" method="POST">
+                            <!-- csrf -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <a href="/register">
+                <i class="fas fa-user-plus"></i> Register
+            </a>
+
+            <a href="/login">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
         {% endif %}
     </div>
 
