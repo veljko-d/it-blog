@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Domain\Post;
 use App\Exceptions\DbException;
+use App\Exceptions\NotFoundException;
 use App\Models\Post\PostModel;
 use Tests\Unit\ModelTestCase;
 
@@ -70,6 +71,38 @@ class PostModelTest extends ModelTestCase
             1,
             $posts,
             "Array size not as expected."
+        );
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testPostNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->postModel->get('title-title');
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testGetPost()
+    {
+        $categoryId = $this->addCategory();
+        $userId = $this->addUser();
+
+        $post = $this->buildPost($categoryId, $userId);
+        $this->addPost($post);
+
+        $post = $this->postModel->get('title-title');
+
+        $this->assertSame(
+            'Title Title',
+            $post->getTitle(),
+            'Title is incorrect.'
         );
     }
 

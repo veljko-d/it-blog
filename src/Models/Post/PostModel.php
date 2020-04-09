@@ -4,6 +4,7 @@ namespace App\Models\Post;
 
 use App\Core\Db\Mysql\Binder\Binder;
 use App\Exceptions\DbException;
+use App\Exceptions\NotFoundException;
 use App\Models\AbstractModel;
 use App\Domain\Post;
 use PDO;
@@ -81,6 +82,44 @@ class PostModel extends AbstractModel implements PostModelInterface
         }
 
         return $numberOfPosts[0];
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return Post
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function get(string $slug): Post
+    {
+        $query = 'SELECT p.*, u.name AS user_name, c.slug AS category_slug,
+                c.name AS category_name,
+                (SELECT name FROM categories WHERE id = c.category_id)
+                AS parent_category_name,
+                (SELECT slug FROM categories WHERE id = c.category_id)
+                AS parent_category_slug
+            FROM posts p
+            LEFT JOIN users u ON p.user_id = u.id
+            LEFT JOIN categories c ON p.category_id = c.id
+            WHERE p.slug = :slug';
+
+        try {
+            $post = $this->db->fetchAll(
+                $query,
+                [':slug' => $slug],
+                PDO::FETCH_CLASS,
+                self::CLASSNAME
+            );
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+
+        if (empty($post)) {
+            throw new NotFoundException('Post not found.');
+        }
+
+        return $post[0];
     }
 
     /**
