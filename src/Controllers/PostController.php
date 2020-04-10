@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
+use App\Actions\Post\GetPostAction;
 
 /**
  * Class PostController
@@ -22,6 +23,21 @@ class PostController extends AbstractController
         $params = $getAllPostsAction->execute($this->request);
 
         return $this->render('posts/index', $params);
+    }
+
+    /**
+     * @param string        $slug
+     * @param GetPostAction $getPostAction
+     *
+     * @return string
+     */
+    public function show(string $slug, GetPostAction $getPostAction): string
+    {
+        $params = $getPostAction->execute($slug);
+
+        $template = isset($params['message']) ? 'not-found' : 'posts/show';
+
+        return $this->render($template, $params);
     }
 
     /**
