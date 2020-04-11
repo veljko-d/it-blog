@@ -41,6 +41,43 @@ class PostModelTest extends ModelTestCase
 
     /**
      * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testStorePostUserNotFound()
+    {
+        $this->expectException(DbException::class);
+
+        $post = $this->buildPost();
+        $this->postModel->store($post);
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testStorePost()
+    {
+        $categoryId = $this->addCategory();
+        $userId = $this->addUser();
+
+        $post = $this->buildPost($categoryId, $userId);
+        $storedPost = $this->postModel->store($post);
+
+        $this->assertSame(
+            'Title Title',
+            $storedPost->getTitle(),
+            'Title is incorrect.'
+        );
+
+        $this->assertSame(
+            $userId,
+            $storedPost->getUserId(),
+            'User ID is incorrect.'
+        );
+    }
+
+    /**
+     * @throws DbException
      */
     public function testGetAllEmpty()
     {

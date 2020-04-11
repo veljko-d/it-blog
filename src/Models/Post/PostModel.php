@@ -23,6 +23,38 @@ class PostModel extends AbstractModel implements PostModelInterface
     const CLASSNAME = Post::class;
 
     /**
+     * @param Post $post
+     *
+     * @return Post|mixed
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function store(Post $post)
+    {
+        $query = 'INSERT INTO posts (title, slug, content, source, user_id,
+                category_id, created_at)
+			VALUES (:title, :slug, :content, :source, :userId, :categoryId,
+			    NOW())';
+
+        $bindParams = [
+            ':title'      => $post->getTitle(),
+            ':slug'       => $slug = $post->getSlug(),
+            ':content'    => $post->getContent(),
+            ':source'     => $post->getSource(),
+            ':categoryId' => $post->getCategoryId(),
+            ':userId'     => $post->getUserId(),
+        ];
+
+        try {
+            $this->db->execute($query, $bindParams);
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+
+        return $this->get($slug);
+    }
+
+    /**
      * @param array $params
      *
      * @return array
