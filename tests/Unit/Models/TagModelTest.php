@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Exceptions\DbException;
+use App\Exceptions\NotFoundException;
 use App\Models\Tag\TagModel;
 use Tests\Unit\ModelTestCase;
 
@@ -40,6 +41,23 @@ class TagModelTest extends ModelTestCase
 
     /**
      * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testStoreTag()
+    {
+        $tag = $this->buildTag();
+
+        $storedTag = $this->tagModel->store($tag);
+
+        $this->assertSame(
+            $tag->getName(),
+            $storedTag->getName(),
+            'Name is incorrect.'
+        );
+    }
+
+    /**
+     * @throws DbException
      */
     public function testGetTagsByPostArrayEmpty()
     {
@@ -62,7 +80,7 @@ class TagModelTest extends ModelTestCase
         $post = $this->buildPost($categoryId, $userId);
         $postId = $this->insertPost($post);
 
-        $tagId = $this->insertTag();
+        $tagId = $this->insertTag($this->buildTag());
         $this->attachTagToPost($postId, $tagId);
 
         $tags = $this->tagModel->getByPost($postId);
@@ -71,6 +89,35 @@ class TagModelTest extends ModelTestCase
             1,
             $tags,
             "Array size not as expected."
+        );
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testGetTagNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->tagModel->get('not-existing-tag');
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testGetTag()
+    {
+        $tag = $this->buildTag();
+        $this->insertTag($tag);
+
+        $storedTag = $this->tagModel->get($tag->getSlug());
+
+        $this->assertSame(
+            'Tag Name',
+            $storedTag->getName(),
+            'Name is incorrect.'
         );
     }
 }

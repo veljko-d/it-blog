@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Core\Db\Mysql\MysqlDriver;
 use App\Domain\Image;
 use App\Domain\Post;
+use App\Domain\Tag;
 use App\Domain\User;
 use Tests\AbstractTestCase;
 
@@ -170,11 +171,23 @@ abstract class ModelTestCase extends AbstractTestCase
     }
 
     /**
+     * @return Tag
+     */
+    protected function buildTag(): Tag
+    {
+        $tag = new Tag();
+
+        return $tag->create('Tag Name', 'tag-name');
+    }
+
+    /**
+     * @param Tag $tag
+     *
      * @return int
      */
-    protected function insertTag(): int
+    protected function insertTag(Tag $tag): int
     {
-        $params = [':name' => 'image-name', ':slug' => 'png',];
+        $params = [':name' => $tag->getName(), ':slug' => $tag->getSlug()];
 
         $query = 'INSERT INTO tags (name, slug, created_at)
 			VALUES (:name, :slug, NOW())';
