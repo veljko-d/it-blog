@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Models;
 
-use App\Domain\User;
 use App\Exceptions\DbException;
 use App\Exceptions\NotFoundException;
 use App\Models\User\UserModel;
@@ -43,7 +42,7 @@ class UserModelTest extends ModelTestCase
     {
         $user = $this->buildUser();
         $this->userModel->store($user);
-        $storedUser = $this->userModel->get('dallas');
+        $storedUser = $this->userModel->get($user->getName());
 
         $this->assertSame(
             'dallas@example.com',
@@ -69,9 +68,10 @@ class UserModelTest extends ModelTestCase
      */
     public function testGetUser()
     {
-        $this->insertUserIntoTheDatabase();
+        $user = $this->buildUser();
+        $this->insertUser($user);
 
-        $user = $this->userModel->get('dallas');
+        $user = $this->userModel->get($user->getName());
 
         $this->assertSame(
             'dallas@example.com',
@@ -88,7 +88,8 @@ class UserModelTest extends ModelTestCase
     {
         $this->expectException(NotFoundException::class);
 
-        $this->insertUserIntoTheDatabase();
+        $user = $this->buildUser();
+        $this->insertUser($user);
 
         $user = $this->userModel->get('dallas');
 
@@ -101,38 +102,5 @@ class UserModelTest extends ModelTestCase
         $this->userModel->delete('dallas');
 
         $this->userModel->get('dallas');
-    }
-
-    /**
-     * Insert new User into the database
-     */
-    private function insertUserIntoTheDatabase()
-    {
-        $params = [
-            ':name'     => 'Dallas',
-            ':slug'     => 'dallas',
-            ':email'    => 'dallas@example.com',
-            ':password' => 'dallas123',
-        ];
-
-        $query = 'INSERT INTO users (name, slug, email, password, created_at)
-			VALUES (:name, :slug, :email, :password, NOW())';
-
-        $this->db->execute($query, $params);
-    }
-
-    /**
-     * @return User
-     */
-    private function buildUser(): User
-    {
-        $user = new User();
-
-        return $user->create(
-            'Dallas',
-            'dallas',
-            'dallas@example.com',
-            'dallas123'
-        );
     }
 }

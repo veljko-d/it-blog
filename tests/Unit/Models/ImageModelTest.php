@@ -18,6 +18,8 @@ class ImageModelTest extends ModelTestCase
      */
     protected $tables = [
         'images',
+        'users',
+        'posts',
     ];
 
     /**
@@ -38,6 +40,42 @@ class ImageModelTest extends ModelTestCase
     /**
      * @throws DbException
      */
+    public function testStoreImageThrowsDbException()
+    {
+        $this->expectException(DbException::class);
+
+        $image = $this->buildImage();
+        $image->setPostId(3);
+        $this->imageModel->store($image);
+    }
+
+    /**
+     * @throws DbException
+     */
+    public function testStoreImage()
+    {
+        $categoryId = $this->insertCategory();
+        $userId = $this->insertUser($this->buildUser());
+
+        $post = $this->buildPost($categoryId, $userId);
+        $postId = $this->insertPost($post);
+
+        $image = $this->buildImage();
+        $image->setPostId($postId);
+        $this->imageModel->store($image);
+
+        $images = $this->imageModel->getByPost($postId);
+
+        $this->assertCount(
+            1,
+            $images,
+            "Array size not as expected."
+        );
+    }
+
+    /**
+     * @throws DbException
+     */
     public function testGetImagesByPostArrayEmpty()
     {
         $images = $this->imageModel->getByPost(3);
@@ -53,33 +91,22 @@ class ImageModelTest extends ModelTestCase
      */
     public function testGetImagesByPost()
     {
-        $this->addImage();
+        $categoryId = $this->insertCategory();
+        $userId = $this->insertUser($this->buildUser());
 
-        $images = $this->imageModel->getByPost(2);
+        $post = $this->buildPost($categoryId, $userId);
+        $postId = $this->insertPost($post);
+
+        $image = $this->buildImage();
+        $image->setPostId($postId);
+        $this->insertImage($image);
+
+        $images = $this->imageModel->getByPost($postId);
 
         $this->assertCount(
             1,
             $images,
             "Array size not as expected."
         );
-    }
-
-    /**
-     * Insert new image into the database
-     */
-    private function addImage()
-    {
-        $params = [
-            ':name'   => 'image-name',
-            ':ext'    => 'png',
-            ':size'   => 1000,
-            ':path'   => '/path/to/image',
-            ':postId' => 2,
-        ];
-
-        $query = 'INSERT INTO images (name, ext, path, size, post_id, created_at)
-			VALUES (:name, :ext, :path, :size, :postId, NOW())';
-
-        $this->db->execute($query, $params);
     }
 }

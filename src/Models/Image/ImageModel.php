@@ -21,6 +21,32 @@ class ImageModel extends AbstractModel implements ImageModelInterface
     const CLASSNAME = Image::class;
 
     /**
+     * @param Image $image
+     *
+     * @return mixed|void
+     * @throws DbException
+     */
+    public function store(Image $image)
+    {
+        $query = 'INSERT INTO images (name, ext, path, size, post_id, created_at)
+			VALUES (:name, :ext, :path, :size, :postId, NOW())';
+
+        $bindParams = [
+            ':name'   => $image->getName(),
+            ':ext'    => $image->getExt(),
+            ':path'   => $image->getPath(),
+            ':size'   => $image->getSize(),
+            ':postId' => $image->getPostId(),
+        ];
+
+        try {
+            $this->db->execute($query, $bindParams);
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+    }
+
+    /**
      * @param int $postId
      *
      * @return array
