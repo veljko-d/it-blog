@@ -71,6 +71,26 @@ class TagModel extends AbstractModel implements TagModelInterface
 
     /**
      * @param int $postId
+     * @param int $tagId
+     *
+     * @throws DbException
+     */
+    public function detachTagAndPost(int $postId, int $tagId)
+    {
+        $query = 'DELETE FROM post_tag
+            WHERE post_id = :post_id AND tag_id = :tag_id';
+
+        $bindParams = [':post_id' => $postId, ':tag_id' => $tagId];
+
+        try {
+            $this->db->execute($query, $bindParams);
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param int $postId
      *
      * @return mixed
      * @throws DbException

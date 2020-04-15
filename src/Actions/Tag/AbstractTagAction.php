@@ -4,6 +4,8 @@ namespace App\Actions\Tag;
 
 use App\Core\Loggers\LoggerInterface;
 use App\Domain\Tag;
+use App\Exceptions\DbException;
+use App\Exceptions\NotFoundException;
 use App\Models\Tag\TagModelInterface;
 
 /**
@@ -43,5 +45,22 @@ abstract class AbstractTagAction
         $this->logger = $logger;
         $this->tagModel = $tagModel;
         $this->tag = $tag;
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return Tag|bool
+     * @throws DbException
+     */
+    protected function tagExists(string $slug)
+    {
+        try {
+            return $this->tagModel->get($slug);
+        } catch (NotFoundException $e) {
+            return false;
+        } catch (DbException $e) {
+            throw $e;
+        }
     }
 }

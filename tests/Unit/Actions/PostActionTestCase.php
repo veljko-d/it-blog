@@ -54,6 +54,15 @@ abstract class PostActionTestCase extends AbstractTestCase
         $id->setAccessible(true);
         $id->setValue($post, 1);
 
+        $post->create(
+            'Title Title',
+            'title-title',
+            'Content content content',
+            'www.source.com',
+            4,
+            3
+        );
+
         return $post;
     }
 }
