@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Actions\Category\GetParentCategories;
 use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
@@ -70,6 +69,24 @@ class PostController extends AbstractController
         $template = isset($params['message']) ? 'not-found' : 'posts/show';
 
         return $this->render($template, $params);
+    }
+
+    /**
+     * @param string                    $slug
+     * @param GetPostAction             $getPostAction
+     * @param GetParentCategoriesAction $getParentCategoriesAction
+     *
+     * @return string
+     */
+    public function edit(
+        string $slug,
+        GetPostAction $getPostAction,
+        GetParentCategoriesAction $getParentCategoriesAction
+    ): string {
+        $post = $getPostAction->execute($slug);
+        $categories = $getParentCategoriesAction->execute();
+
+        return $this->render('posts/edit', array_merge($post, $categories));
     }
 
     /**

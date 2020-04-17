@@ -51,6 +51,14 @@ return [
             'slug' => 'string',
         ],
     ],
+    'get::posts/:slug/edit' => [
+        'controller' => PostController::class,
+        'method'     => 'edit',
+        'login'      => true,
+        'params'     => [
+            'slug' => 'string',
+        ],
+    ],
     'post::posts/:slug/delete' => [
         'controller' => PostController::class,
         'method'     => 'destroy',

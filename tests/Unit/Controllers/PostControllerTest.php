@@ -242,6 +242,53 @@ class PostControllerTest extends ControllerTestCase
     /**
      * @test
      */
+    public function testGetEditForm()
+    {
+        $controller = $this->getController();
+
+        $getPostAction = $this->createMock(GetPostAction::class);
+
+        $getParentCategoriesAction = $this->createMock(
+            GetParentCategoriesAction::class
+        );
+
+        $slug = 'post-title';
+
+        $getPostAction->expects($this->once())
+            ->method('execute')
+            ->with($this->equalTo($slug))
+            ->will($this->returnValue(['post' => []]));
+
+        $getParentCategoriesAction->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue(['categories' => []]));
+
+        $response = "Rendered template";
+
+        $this->templateEngine->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo('posts/edit'),
+                $this->arrayHasKey('post')
+            )
+            ->will($this->returnValue($response));
+
+        $result = $controller->edit(
+            $slug,
+            $getPostAction,
+            $getParentCategoriesAction
+        );
+
+        $this->assertSame(
+            $result,
+            $response,
+            'Response object is not the expected one.'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function testDeleteError()
     {
         $controller = $this->getController();
