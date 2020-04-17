@@ -59,6 +59,14 @@ return [
             'slug' => 'string',
         ],
     ],
+    'post::posts/:slug/update' => [
+        'controller' => PostController::class,
+        'method'     => 'update',
+        'login'      => true,
+        'params'     => [
+            'slug' => 'string',
+        ],
+    ],
     'post::posts/:slug/delete' => [
         'controller' => PostController::class,
         'method'     => 'destroy',

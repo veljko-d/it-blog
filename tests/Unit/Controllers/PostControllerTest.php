@@ -7,6 +7,7 @@ use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
 use App\Actions\Post\GetPostAction;
 use App\Actions\Post\StorePostAction;
+use App\Actions\Post\UpdatePostAction;
 use App\Controllers\PostController;
 use App\Domain\Post;
 use Tests\Unit\ControllerTestCase;
@@ -160,8 +161,6 @@ class PostControllerTest extends ControllerTestCase
             )
             ->will($this->returnValue(['status' => [], 'post' => 'post-title']));
 
-        $response = "Rendered template";
-
         $this->templateEngine->expects($this->never())
             ->method('render');
 
@@ -284,6 +283,76 @@ class PostControllerTest extends ControllerTestCase
             $response,
             'Response object is not the expected one.'
         );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function testUpdatePostReturnError()
+    {
+        $controller = $this->getController();
+
+        $updatePostAction = $this->createMock(UpdatePostAction::class);
+
+        $slug = 'post-title';
+
+        $updatePostAction->expects($this->once())
+            ->method('execute')
+            ->with(
+                $this->equalTo($this->request),
+                $this->equalTo($slug)
+            )
+            ->will($this->returnValue(['errors' => 'Error updating post!']));
+
+        $response = "Rendered template";
+
+        $this->templateEngine->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo('posts/edit'),
+                $this->arrayHasKey('errors')
+            )
+            ->will($this->returnValue($response));
+
+        $this->redirect->expects($this->never())
+            ->method('location');
+
+        $result = $controller->update($slug, $updatePostAction);
+
+        $this->assertSame(
+            $result,
+            $response,
+            'Response object is not the expected one.'
+        );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function testUpdatePost()
+    {
+        $controller = $this->getController();
+
+        $updatePostAction = $this->createMock(UpdatePostAction::class);
+
+        $slug = 'post-title';
+
+        $updatePostAction->expects($this->once())
+            ->method('execute')
+            ->with(
+                $this->equalTo($this->request),
+                $this->equalTo($slug)
+            )
+            ->will($this->returnValue(['status' => [], 'post' => 'new-title']));
+
+        $this->templateEngine->expects($this->never())
+            ->method('render');
+
+        $this->redirect->expects($this->once())
+            ->method('location')
+            ->with($this->equalTo('/posts/new-title'));
+
+        $result = $controller->update($slug, $updatePostAction);
     }
 
     /**

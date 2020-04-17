@@ -7,6 +7,7 @@ use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
 use App\Actions\Post\GetPostAction;
 use App\Actions\Post\StorePostAction;
+use App\Actions\Post\UpdatePostAction;
 
 /**
  * Class PostController
@@ -87,6 +88,25 @@ class PostController extends AbstractController
         $categories = $getParentCategoriesAction->execute();
 
         return $this->render('posts/edit', array_merge($post, $categories));
+    }
+
+    /**
+     * @param string           $slug
+     * @param UpdatePostAction $updatePostAction
+     *
+     * @return string
+     * @throws \ReflectionException
+     */
+    public function update(string $slug, UpdatePostAction $updatePostAction)
+    {
+        $params = $updatePostAction->execute($this->request, $slug);
+
+        if (isset($params['errors'])) {
+            return $this->render('posts/edit', $params);
+        }
+
+        $this->setStatusMessage('status', $params['status']);
+        $this->redirect->location('/posts/' . $params['post']);
     }
 
     /**
