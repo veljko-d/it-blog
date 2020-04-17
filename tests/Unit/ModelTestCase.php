@@ -166,6 +166,22 @@ abstract class ModelTestCase extends AbstractTestCase
     /**
      * @param Post $post
      *
+     * @return Post
+     */
+    protected function updatePost(Post $post)
+    {
+        return $post->update(
+            'New Title',
+            'new-title',
+            'New Content Content',
+            'www.new-source.com',
+            $post->getCategoryId()
+        );
+    }
+
+    /**
+     * @param Post $post
+     *
      * @return int
      */
     protected function insertPost(Post $post): int

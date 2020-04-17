@@ -141,4 +141,45 @@ class PostModelTest extends ModelTestCase
             'Title is incorrect.'
         );
     }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testUpdatePostNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $post = $this->buildPost(1, 1);
+
+        $this->postModel->update($post, $post->getSlug());
+    }
+
+    /**
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function testUpdatePost()
+    {
+        $categoryId = $this->insertCategory();
+        $userId = $this->insertUser($this->buildUser());
+
+        $post = $this->buildPost($categoryId, $userId);
+        $storedPost = $this->postModel->store($post);
+
+        $this->assertSame(
+            'title-title',
+            $slug = $storedPost->getSlug(),
+            'Slug is incorrect.'
+        );
+
+        $post = $this->updatePost($storedPost);
+        $updatedPost = $this->postModel->update($post, $slug);
+
+        $this->assertSame(
+            'New Title',
+            $updatedPost->getTitle(),
+            'Title is incorrect.'
+        );
+    }
 }

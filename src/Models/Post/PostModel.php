@@ -155,6 +155,41 @@ class PostModel extends AbstractModel implements PostModelInterface
     }
 
     /**
+     * @param Post   $post
+     * @param string $slug
+     *
+     * @return Post
+     * @throws DbException
+     * @throws NotFoundException
+     */
+    public function update(Post $post, string $slug)
+    {
+        $postId = $this->get($slug)->getId();
+
+        $query = 'UPDATE posts
+			SET title = :title, slug = :slug, content = :content,
+			    source = :source, category_id = :category_id, updated_at = NOW()
+			WHERE id = :id';
+
+        $bindParams = [
+            ':title'       => $post->getTitle(),
+            ':slug'        => $slug = $post->getSlug(),
+            ':content'     => $post->getContent(),
+            ':source'      => $post->getSource(),
+            ':category_id' => $post->getCategoryId(),
+            ':id'          => $postId,
+        ];
+
+        try {
+            $this->db->execute($query, $bindParams);
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+
+        return $this->get($slug);
+    }
+
+    /**
      * @param string $slug
      *
      * @return mixed|void
