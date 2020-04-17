@@ -125,6 +125,25 @@ abstract class ModelTestCase extends AbstractTestCase
     }
 
     /**
+     * @param int $parentId
+     */
+    protected function insertSubcategories(int $parentId)
+    {
+        $subcategories = [
+            [':name' => 'Cat 3', ':slug' => 'cat-3', ':category_id' => $parentId],
+            [':name' => 'Cat 4', ':slug' => 'cat-4', ':category_id' => $parentId],
+            [':name' => 'Cat 5', ':slug' => 'cat-5', ':category_id' => $parentId],
+        ];
+
+        foreach ($subcategories as $subcategory) {
+            $query = 'INSERT INTO categories (name, slug, category_id)
+			    VALUES (:name, :slug, :category_id)';
+
+            $this->db->execute($query, $subcategory);
+        }
+    }
+
+    /**
      * @param int $categoryId
      * @param int $userId
      *
@@ -249,39 +268,5 @@ abstract class ModelTestCase extends AbstractTestCase
         $this->db->execute($query, $params);
 
         return $this->db->lastInsertId();
-    }
-
-    /**
-     * @return int
-     */
-    protected function insertParentCategory(): int
-    {
-        $parent = [':name' => 'Cat 1', ':slug' => 'cat-1'];
-
-        $query = 'INSERT INTO categories (name, slug)
-			VALUES (:name, :slug)';
-
-        $this->db->execute($query, $parent);
-
-        return $this->db->lastInsertId();
-    }
-
-    /**
-     * @param int $parentId
-     */
-    protected function insertChildrenCategories(int $parentId)
-    {
-        $children = [
-            [':name' => 'Cat 3', ':slug' => 'cat-3', ':category_id' => $parentId],
-            [':name' => 'Cat 4', ':slug' => 'cat-4', ':category_id' => $parentId],
-            [':name' => 'Cat 5', ':slug' => 'cat-5', ':category_id' => $parentId],
-        ];
-
-        foreach ($children as $child) {
-            $query = 'INSERT INTO categories (name, slug, category_id)
-			    VALUES (:name, :slug, :category_id)';
-
-            $this->db->execute($query, $child);
-        }
     }
 }

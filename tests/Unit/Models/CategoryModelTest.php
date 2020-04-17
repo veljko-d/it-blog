@@ -38,8 +38,8 @@ class CategoryModelTest extends ModelTestCase
      */
     public function testGetParentCategoriesWithSubcategories()
     {
-        $parentId = $this->insertParentCategory();
-        $this->insertChildrenCategories($parentId);
+        $parentId = $this->insertCategory();
+        $this->insertSubcategories($parentId);
 
         $parents = $this->categoryModel->getParentCategories();
         $parentId = ($parents[0])->getId();
