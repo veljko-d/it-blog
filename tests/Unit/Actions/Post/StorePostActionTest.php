@@ -130,16 +130,16 @@ class StorePostActionTest extends PostActionTestCase
 
         $this->storeTagsAction->expects($this->once())
             ->method('execute')
-            ->with($this->equalTo(
-                $inputs['tags']),
-                $post->getId()
+            ->with(
+                $this->equalTo($inputs['tags']),
+                $this->equalTo($post->getId())
             );
 
         $this->storeImageAction->expects($this->once())
             ->method('execute')
-            ->with($this->equalTo(
-                $inputs['images']),
-                $post->getId()
+            ->with(
+                $this->equalTo($inputs['images']),
+                $this->equalTo($post->getId())
             );
 
         $result = $storePostAction->execute($request, $userId);

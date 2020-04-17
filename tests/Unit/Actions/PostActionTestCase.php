@@ -65,4 +65,20 @@ abstract class PostActionTestCase extends AbstractTestCase
 
         return $post;
     }
+
+    /**
+     * @param Post $post
+     *
+     * @return Post
+     */
+    protected function updatePost(Post $post): Post
+    {
+        return $post->update(
+            'New Title',
+            'new-title',
+            'New Content content content',
+            'www.new-source.com',
+            6
+        );
+    }
 }
