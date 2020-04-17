@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Actions\Category\GetParentCategories;
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
 use App\Actions\Post\GetPostAction;
+use App\Actions\Post\StorePostAction;
 
 /**
  * Class PostController
@@ -23,6 +26,35 @@ class PostController extends AbstractController
         $params = $getAllPostsAction->execute($this->request);
 
         return $this->render('posts/index', $params);
+    }
+
+    /**
+     * @param GetParentCategoriesAction $getParentCategoriesAction
+     *
+     * @return string
+     */
+    public function create(GetParentCategoriesAction $getParentCategoriesAction): string
+    {
+        $params = $getParentCategoriesAction->execute();
+
+        return $this->render('posts/create', $params);
+    }
+
+    /**
+     * @param StorePostAction $storePostAction
+     *
+     * @return string
+     */
+    public function store(StorePostAction $storePostAction)
+    {
+        $params = $storePostAction->execute($this->request, $this->userId);
+
+        if (isset($params['errors'])) {
+            return $this->render('posts/create', $params);
+        }
+
+        $this->setStatusMessage('status', $params['status']);
+        $this->redirect->location('/posts/' . $params['post']);
     }
 
     /**

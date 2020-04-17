@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Controllers;
 
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Post\DeletePostAction;
 use App\Actions\Post\GetAllPostsAction;
 use App\Actions\Post\GetPostAction;
+use App\Actions\Post\StorePostAction;
 use App\Controllers\PostController;
 use App\Domain\Post;
 use Tests\Unit\ControllerTestCase;
@@ -60,6 +62,114 @@ class PostControllerTest extends ControllerTestCase
             $response,
             'Response object is not the expected one.'
         );
+    }
+
+    /**
+     * @test
+     */
+    public function testGetCreateForm()
+    {
+        $controller = $this->getController();
+
+        $getParentCategoriesAction = $this->createMock(
+            GetParentCategoriesAction::class
+        );
+
+        $getParentCategoriesAction->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue(['categories' => []]));
+
+        $response = "Rendered template";
+
+        $this->templateEngine->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo('posts/create'),
+                $this->arrayHasKey('categories')
+            )
+            ->will($this->returnValue($response));
+
+        $result = $controller->create($getParentCategoriesAction);
+
+        $this->assertSame(
+            $result,
+            $response,
+            'Response object is not the expected one.'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testStorePostReturnError()
+    {
+        $controller = $this->getController();
+
+        $userId = 5;
+        $controller->setUserId($userId);
+
+        $storePostAction = $this->createMock(StorePostAction::class);
+
+        $storePostAction->expects($this->once())
+            ->method('execute')
+            ->with(
+                $this->equalTo($this->request),
+                $this->equalTo($userId)
+            )
+            ->will($this->returnValue(['errors' => []]));
+
+        $response = "Rendered template";
+
+        $this->templateEngine->expects($this->once())
+            ->method('render')
+            ->with(
+                $this->equalTo('posts/create'),
+                $this->arrayHasKey('errors')
+            )
+            ->will($this->returnValue($response));
+
+        $this->redirect->expects($this->never())
+            ->method('location');
+
+        $result = $controller->store($storePostAction);
+
+        $this->assertSame(
+            $result,
+            $response,
+            'Response object is not the expected one.'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testStorePost()
+    {
+        $controller = $this->getController();
+
+        $userId = 5;
+        $controller->setUserId($userId);
+
+        $storePostAction = $this->createMock(StorePostAction::class);
+
+        $storePostAction->expects($this->once())
+            ->method('execute')
+            ->with(
+                $this->equalTo($this->request),
+                $this->equalTo($userId)
+            )
+            ->will($this->returnValue(['status' => [], 'post' => 'post-title']));
+
+        $response = "Rendered template";
+
+        $this->templateEngine->expects($this->never())
+            ->method('render');
+
+        $this->redirect->expects($this->once())
+            ->method('location')
+            ->with($this->equalTo('/posts/post-title'));
+
+        $controller->store($storePostAction);
     }
 
     /**

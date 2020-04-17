@@ -34,6 +34,16 @@ return [
         'controller' => PostController::class,
         'method'     => 'index',
     ],
+    'get::posts/create' => [
+        'controller' => PostController::class,
+        'method'     => 'create',
+        'login'      => true,
+    ],
+    'post::posts' => [
+        'controller' => PostController::class,
+        'method'     => 'store',
+        'login'      => true,
+    ],
     'get::posts/:slug' => [
         'controller' => PostController::class,
         'method'     => 'show',
