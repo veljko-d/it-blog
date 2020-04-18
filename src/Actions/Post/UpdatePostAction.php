@@ -2,6 +2,7 @@
 
 namespace App\Actions\Post;
 
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Tag\StoreTagsAction;
 use App\Core\Loggers\LoggerInterface;
 use App\Core\Request\Request;
@@ -57,6 +58,11 @@ class UpdatePostAction extends AbstractPostAction
     private $storeTagsAction;
 
     /**
+     * @var GetParentCategoriesAction
+     */
+    private $getParentCategoriesAction;
+
+    /**
      * @var Slug
      */
     private $slug;
@@ -64,12 +70,13 @@ class UpdatePostAction extends AbstractPostAction
     /**
      * UpdatePostAction constructor.
      *
-     * @param LoggerInterface    $logger
-     * @param PostModelInterface $postModel
-     * @param Post               $post
-     * @param GetPostAction      $getPostAction
-     * @param StoreTagsAction    $storeTagsAction
-     * @param Slug               $slug
+     * @param LoggerInterface           $logger
+     * @param PostModelInterface        $postModel
+     * @param Post                      $post
+     * @param GetPostAction             $getPostAction
+     * @param StoreTagsAction           $storeTagsAction
+     * @param GetParentCategoriesAction $getParentCategoriesAction
+     * @param Slug                      $slug
      */
     public function __construct(
         LoggerInterface $logger,
@@ -77,12 +84,14 @@ class UpdatePostAction extends AbstractPostAction
         Post $post,
         GetPostAction $getPostAction,
         StoreTagsAction $storeTagsAction,
+        GetParentCategoriesAction $getParentCategoriesAction,
         Slug $slug
     ) {
         parent::__construct($logger, $postModel, $post);
 
         $this->storeTagsAction = $storeTagsAction;
         $this->getPostAction = $getPostAction;
+        $this->getParentCategoriesAction = $getParentCategoriesAction;
         $this->slug = $slug;
         $this->slug->setModel($this->postModel);
     }
@@ -103,9 +112,13 @@ class UpdatePostAction extends AbstractPostAction
         }
 
         if (isset($data['errors'])) {
+            $categories = $this->getParentCategoriesAction->execute();
+            $post = $this->getPostAction->execute($slug);
+
             return [
-                'post'   => $this->getPostAction->execute($slug)['post'],
-                'errors' => $data['errors'],
+                'post'       => $post['post'],
+                'categories' => $categories['categories'],
+                'errors'     => $data['errors'],
             ];
         }
 

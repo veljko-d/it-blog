@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Actions\Post;
 
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Post\GetPostAction;
 use App\Actions\Post\UpdatePostAction;
 use App\Actions\Tag\StoreTagsAction;
@@ -28,6 +29,11 @@ class UpdatePostActionTest extends PostActionTestCase
     private $storeTagsAction;
 
     /**
+     * @var GetParentCategoriesAction|MockObject
+     */
+    private $getParentCategoriesAction;
+
+    /**
      * @var MockObject
      */
     private $slug;
@@ -41,6 +47,9 @@ class UpdatePostActionTest extends PostActionTestCase
 
         $this->getPostAction = $this->createMock(GetPostAction::class);
         $this->storeTagsAction = $this->createMock(StoreTagsAction::class);
+        $this->getParentCategoriesAction = $this->createMock(
+            GetParentCategoriesAction::class
+        );
         $this->slug = $this->createMock(Slug::class);
     }
 
@@ -55,6 +64,7 @@ class UpdatePostActionTest extends PostActionTestCase
             $this->post,
             $this->getPostAction,
             $this->storeTagsAction,
+            $this->getParentCategoriesAction,
             $this->slug
         );
     }
@@ -71,6 +81,10 @@ class UpdatePostActionTest extends PostActionTestCase
             ->method('validate')
             ->with($this->arrayHasKey('title'))
             ->will($this->returnValue(['errors' => []]));
+
+        $this->getParentCategoriesAction->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue(['categories' => []]));
 
         $slug = 'new-title';
 
