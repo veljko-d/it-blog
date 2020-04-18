@@ -39,7 +39,7 @@ class GetPostsByCategoryActionTest extends CategoryActionTestCase
             ->with($this->arrayHasKey('page'))
             ->will($this->returnValue([]));
 
-        $result = $getPostsByCategoryAction->execute($request, 'Cat 1');
+        $result = $getPostsByCategoryAction->execute($request, 'cat-1');
 
         $this->assertArrayHasKey('posts', $result);
     }
