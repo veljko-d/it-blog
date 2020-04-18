@@ -16,7 +16,11 @@ class CategoryModelTest extends ModelTestCase
     /**
      * @var array
      */
-    protected $tables = ['categories'];
+    protected $tables = [
+        'categories',
+        'users',
+        'posts',
+    ];
 
     /**
      * @var CategoryModel
@@ -55,6 +59,28 @@ class CategoryModelTest extends ModelTestCase
         $this->assertCount(
             3,
             $children,
+            "Array size not as expected."
+        );
+    }
+
+    /**
+     * @throws DbException
+     */
+    public function testGetPostsByCategory()
+    {
+        $categoryId = $this->insertCategory();
+        $userId = $this->insertUser($this->buildUser());
+
+        $post = $this->buildPost($categoryId, $userId);
+        $this->insertPost($post);
+
+        $params = ['slug' => 'web', 'page' => 1, 'length' => 5];
+
+        $posts = $this->categoryModel->getPostsByCategory($params);
+
+        $this->assertCount(
+            1,
+            $posts,
             "Array size not as expected."
         );
     }
