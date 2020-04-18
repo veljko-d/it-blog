@@ -2,6 +2,7 @@
 
 use App\Controllers\Auth\LoginController;
 use App\Controllers\Auth\RegisterController;
+use App\Controllers\CategoryController;
 use App\Controllers\HomeController;
 use App\Controllers\PostController;
 
@@ -71,6 +72,13 @@ return [
         'controller' => PostController::class,
         'method'     => 'destroy',
         'login'      => true,
+        'params'     => [
+            'slug' => 'string',
+        ],
+    ],
+    'get::categories/:slug' => [
+        'controller' => CategoryController::class,
+        'method'     => 'index',
         'params'     => [
             'slug' => 'string',
         ],
