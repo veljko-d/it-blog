@@ -5,6 +5,7 @@ use App\Controllers\Auth\RegisterController;
 use App\Controllers\CategoryController;
 use App\Controllers\HomeController;
 use App\Controllers\PostController;
+use App\Controllers\TagController;
 
 return [
     'get::' => [
@@ -78,6 +79,13 @@ return [
     ],
     'get::categories/:slug' => [
         'controller' => CategoryController::class,
+        'method'     => 'index',
+        'params'     => [
+            'slug' => 'string',
+        ],
+    ],
+    'get::tags/:slug' => [
+        'controller' => TagController::class,
         'method'     => 'index',
         'params'     => [
             'slug' => 'string',
