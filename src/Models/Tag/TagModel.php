@@ -2,10 +2,12 @@
 
 namespace App\Models\Tag;
 
+use App\Core\Db\Mysql\Binder\Binder;
 use App\Exceptions\DbException;
 use App\Exceptions\NotFoundException;
 use App\Models\AbstractModel;
 use App\Domain\Tag;
+use App\Models\Post\PostModel;
 use PDO;
 use PDOException;
 
@@ -112,6 +114,71 @@ class TagModel extends AbstractModel implements TagModelInterface
         } catch (PDOException $e) {
             throw new DbException($e->getMessage());
         }
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     * @throws DbException
+     */
+    public function getPostsByTag(array $params): array
+    {
+        $start = $params['length'] * ($params['page'] - 1);
+
+        $query = 'SELECT p.*, u.name AS user_name
+            FROM posts p
+            LEFT JOIN post_tag pt ON p.id = pt.post_id
+            LEFT JOIN tags t ON t.id = pt.tag_id
+            LEFT JOIN users u ON p.user_id = u.id
+            WHERE t.slug = :slug
+            ORDER BY p.created_at DESC
+            LIMIT :start, :length';
+
+        $bindParams = [
+            [':slug', $params['slug'], PDO::PARAM_STR],
+            [':start', $start, PDO::PARAM_INT],
+            [':length', $params['length'], PDO::PARAM_INT],
+        ];
+
+        try {
+            return $this->db->fetchAll(
+                $query,
+                $bindParams,
+                PDO::FETCH_CLASS,
+                PostModel::CLASSNAME,
+                Binder::BIND_PARAM
+            );
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return int
+     * @throws DbException
+     */
+    public function count(string $slug): int
+    {
+        $query = 'SELECT COUNT(*)
+            FROM posts p
+            LEFT JOIN post_tag pt ON p.id = pt.post_id
+            LEFT JOIN tags t ON t.id = pt.tag_id
+            WHERE t.slug = :slug';
+
+        try {
+            $numberOfPosts = $this->db->fetchAll(
+                $query,
+                [':slug' => $slug],
+                PDO::FETCH_COLUMN
+            );
+        } catch (PDOException $e) {
+            throw new DbException($e->getMessage());
+        }
+
+        return $numberOfPosts[0];
     }
 
     /**

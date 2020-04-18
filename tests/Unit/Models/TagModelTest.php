@@ -94,6 +94,31 @@ class TagModelTest extends ModelTestCase
 
     /**
      * @throws DbException
+     */
+    public function testGetPostsByTag()
+    {
+        $categoryId = $this->insertCategory();
+        $userId = $this->insertUser($this->buildUser());
+
+        $post = $this->buildPost($categoryId, $userId);
+        $postId = $this->insertPost($post);
+
+        $tagId = $this->insertTag($this->buildTag());
+        $this->attachTagToPost($postId, $tagId);
+
+        $params = ['slug' => 'tag-name', 'page' => 1, 'length' => 5];
+
+        $posts = $this->tagModel->getPostsByTag($params);
+
+        $this->assertCount(
+            1,
+            $posts,
+            "Array size not as expected."
+        );
+    }
+
+    /**
+     * @throws DbException
      * @throws NotFoundException
      */
     public function testGetTagNotFound()
