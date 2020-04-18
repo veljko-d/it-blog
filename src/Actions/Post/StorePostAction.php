@@ -2,6 +2,7 @@
 
 namespace App\Actions\Post;
 
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Image\StoreImageAction;
 use App\Actions\Tag\StoreTagsAction;
 use App\Core\Loggers\LoggerInterface;
@@ -65,6 +66,11 @@ class StorePostAction extends AbstractPostAction
     private $storeImageAction;
 
     /**
+     * @var GetParentCategoriesAction
+     */
+    private $getParentCategoriesAction;
+
+    /**
      * @var Slug
      */
     private $slug;
@@ -72,12 +78,13 @@ class StorePostAction extends AbstractPostAction
     /**
      * StorePostAction constructor.
      *
-     * @param LoggerInterface    $logger
-     * @param PostModelInterface $postModel
-     * @param Post               $post
-     * @param StoreTagsAction    $storeTagsAction
-     * @param StoreImageAction   $storeImageAction
-     * @param Slug               $slug
+     * @param LoggerInterface           $logger
+     * @param PostModelInterface        $postModel
+     * @param Post                      $post
+     * @param StoreTagsAction           $storeTagsAction
+     * @param StoreImageAction          $storeImageAction
+     * @param GetParentCategoriesAction $getParentCategoriesAction
+     * @param Slug                      $slug
      */
     public function __construct(
         LoggerInterface $logger,
@@ -85,12 +92,14 @@ class StorePostAction extends AbstractPostAction
         Post $post,
         StoreTagsAction $storeTagsAction,
         StoreImageAction $storeImageAction,
+        GetParentCategoriesAction $getParentCategoriesAction,
         Slug $slug
     ) {
         parent::__construct($logger, $postModel, $post);
 
         $this->storeTagsAction = $storeTagsAction;
         $this->storeImageAction = $storeImageAction;
+        $this->getParentCategoriesAction = $getParentCategoriesAction;
         $this->slug = $slug;
         $this->slug->setModel($this->postModel);
     }
@@ -110,7 +119,12 @@ class StorePostAction extends AbstractPostAction
         }
 
         if (isset($data['errors'])) {
-            return ['errors' => $data['errors']];
+            $categories = $this->getParentCategoriesAction->execute();
+
+            return [
+                'categories' => $categories['categories'],
+                'errors'     => $data['errors']
+            ];
         }
 
         try {

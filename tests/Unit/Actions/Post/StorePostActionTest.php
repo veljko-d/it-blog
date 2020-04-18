@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Actions\Post;
 
+use App\Actions\Category\GetParentCategoriesAction;
 use App\Actions\Image\StoreImageAction;
 use App\Actions\Post\StorePostAction;
 use App\Actions\Tag\StoreTagsAction;
@@ -28,6 +29,11 @@ class StorePostActionTest extends PostActionTestCase
     private $storeImageAction;
 
     /**
+     * @var GetParentCategoriesAction|MockObject
+     */
+    private $getParentCategoriesAction;
+
+    /**
      * @var Slug|MockObject
      */
     private $slug;
@@ -41,6 +47,9 @@ class StorePostActionTest extends PostActionTestCase
 
         $this->storeTagsAction = $this->createMock(StoreTagsAction::class);
         $this->storeImageAction = $this->createMock(StoreImageAction::class);
+        $this->getParentCategoriesAction = $this->createMock(
+            GetParentCategoriesAction::class
+        );
         $this->slug = $this->createMock(Slug::class);
     }
 
@@ -55,6 +64,7 @@ class StorePostActionTest extends PostActionTestCase
             $this->post,
             $this->storeTagsAction,
             $this->storeImageAction,
+            $this->getParentCategoriesAction,
             $this->slug
         );
     }
@@ -71,6 +81,10 @@ class StorePostActionTest extends PostActionTestCase
             ->method('validate')
             ->with($this->arrayHasKey('title'))
             ->will($this->returnValue(['errors' => []]));
+
+        $this->getParentCategoriesAction->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue(['categories' => []]));
 
         $this->postModel->expects($this->never())
             ->method('store');
